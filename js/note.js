@@ -28,6 +28,17 @@ const Note = {
     noteElement.addEventListener('drop', Note.drop);
   },
 
+  create() {
+    const noteElement = document.createElement('div');
+    noteElement.classList.add('note');
+    noteElement.setAttribute('draggable', 'true');
+    noteElement.setAttribute('data-note-id', Note.idCounter);
+
+    Note.idCounter++;
+    Note.process(noteElement);
+
+    return noteElement;
+  },
 
   dragstart(evt) {
     Note.dragged = this;
