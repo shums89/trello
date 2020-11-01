@@ -47,17 +47,19 @@ const Note = {
     evt.stopPropagation();
   },
 
-  dragend() {
+  dragend(evt) {
     Note.dragged = null;
     this.classList.remove('dragged');
 
     document
       .querySelectorAll('.note')
       .forEach(element => element.classList.remove('under'));
+
+    evt.stopPropagation();
   },
 
   dragenter() {
-    if (this === Note.dragged) {
+    if (!Note.dragged || this === Note.dragged) {
       return;
     }
     this.classList.add('under');
@@ -65,14 +67,15 @@ const Note = {
 
   dragover(evt) {
     evt.preventDefault();
+    evt.stopPropagation();
 
-    if (this === Note.dragged) {
+    if (!Note.dragged || this === Note.dragged) {
       return;
     }
   },
 
   dragleave() {
-    if (this === Note.dragged) {
+    if (!Note.dragged || this === Note.dragged) {
       return;
     }
     this.classList.remove('under');
@@ -81,7 +84,7 @@ const Note = {
   drop(evt) {
     evt.stopPropagation();
 
-    if (this === Note.dragged) {
+    if (!Note.dragged || this === Note.dragged) {
       return;
     }
 
