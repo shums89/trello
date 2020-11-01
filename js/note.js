@@ -1,3 +1,5 @@
+'use strict';
+
 const Note = {
   idCounter: 8,
   dragged: null,
@@ -18,6 +20,8 @@ const Note = {
       if (!noteElement.textContent.trim().length) {
         noteElement.remove();
       }
+
+      Application.save();
     });
 
     noteElement.addEventListener('dragstart', Note.dragstart);
@@ -28,13 +32,19 @@ const Note = {
     noteElement.addEventListener('drop', Note.drop);
   },
 
-  create() {
+  create(id = null, content = '') {
     const noteElement = document.createElement('div');
     noteElement.classList.add('note');
     noteElement.setAttribute('draggable', 'true');
-    noteElement.setAttribute('data-note-id', Note.idCounter);
+    noteElement.textContent = content;
 
-    Note.idCounter++;
+    if (id) {
+      noteElement.setAttribute('data-note-id', id);
+    } else {
+      noteElement.setAttribute('data-note-id', Note.idCounter);
+      Note.idCounter++;
+    }
+
     Note.process(noteElement);
 
     return noteElement;
@@ -48,6 +58,8 @@ const Note = {
   },
 
   dragend(evt) {
+    evt.stopPropagation();
+
     Note.dragged = null;
     this.classList.remove('dragged');
 
@@ -55,7 +67,7 @@ const Note = {
       .querySelectorAll('.note')
       .forEach(element => element.classList.remove('under'));
 
-    evt.stopPropagation();
+    Application.save();
   },
 
   dragenter() {

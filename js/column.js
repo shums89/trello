@@ -1,3 +1,5 @@
+'use strict';
+
 const Column = {
   idCounter: 4,
   dragged: null,
@@ -33,11 +35,17 @@ const Column = {
     columnElement.addEventListener('drop', Column.drop);
   },
 
-  create() {
+  create(id = null) {
     const columnElement = document.createElement('div');
     columnElement.classList.add('column');
     columnElement.setAttribute('draggable', 'true');
-    columnElement.setAttribute('data-column-id', Column.idCounter);
+
+    if (id) {
+      columnElement.setAttribute('data-column-id', id);
+    } else {
+      columnElement.setAttribute('data-column-id', Column.idCounter);
+      Column.idCounter++;
+    }
 
     columnElement.innerHTML = `
         <p class="column-header" contenteditable="true">В плане</p>
@@ -47,7 +55,7 @@ const Column = {
         </p>
       `;
 
-    Column.idCounter++;
+    Column.process(columnElement);
 
     return columnElement;
   },
@@ -75,6 +83,8 @@ const Column = {
     document
       .querySelectorAll('.column')
       .forEach(element => element.classList.remove('under'));
+
+    Application.save();
   },
 
   /*

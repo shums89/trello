@@ -1,8 +1,6 @@
 'use strict';
 
-document
-  .querySelectorAll('.column')
-  .forEach(Column.process)
+Application.load();
 
 document
   .querySelector('[data-action-addColumn]')
@@ -10,9 +8,6 @@ document
     const columnElement = Column.create();
 
     document.querySelector('.columns').append(columnElement);
-    Column.process(columnElement);
-  })
 
-document
-  .querySelectorAll('.note')
-  .forEach(Note.process);
+    Application.save();
+  })
