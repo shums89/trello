@@ -1,5 +1,8 @@
 'use strict';
 
+if (!localStorage.getItem('trello')) {
+  Application.save();
+}
 Application.load();
 
 document
