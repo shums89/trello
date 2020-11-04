@@ -87,6 +87,10 @@ class Column {
       .querySelectorAll('.column')
       .forEach(element => element.classList.remove('under'));
 
+    document
+      .querySelector('.recycler')
+      .classList.remove('under');
+
     Application.save();
   }
 
